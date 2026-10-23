@@ -1,0 +1,76 @@
+players 36177
+
+Channel x tier mix (% of channel installs):
+country_tier     1     2     3     4
+channel                             
+organic       33.7  25.8  22.1  18.4
+paid_social   34.5  25.3  21.8  18.4
+paid_video    11.2   8.5  15.2  65.1
+
+Channel x install month (counts):
+install_month  2026-01-01  2026-02-01  2026-03-01
+channel                                          
+organic              4388        3888        4273
+paid_social          3743        3584        3843
+paid_video           1447        1709        9302
+
+NAIVE by channel
+                 n      d7   rev30  payer30
+channel                                    
+organic      12549  0.2646  2.4773   0.1337
+paid_social  11170  0.2566  2.2462   0.1332
+paid_video   12458  0.2459  1.5465   0.0903
+
+BY TIER
+                   n                             d7                          rev30                        payer30                       
+channel      organic paid_social paid_video organic paid_social paid_video organic paid_social paid_video organic paid_social paid_video
+country_tier                                                                                                                            
+1               4228        3858       1390   0.267       0.258      0.235   3.787       3.236      3.445   0.188       0.184      0.177
+2               3241        2824       1058   0.277       0.260      0.257   2.371       2.146      2.048   0.137       0.130      0.122
+3               2776        2430       1898   0.269       0.260      0.247   1.802       1.770      1.527   0.097       0.108      0.100
+4               2304        2058       8112   0.237       0.245      0.246   1.037       1.090      1.160   0.074       0.073      0.069
+
+DIFFERENCES (bootstrap 95% CI)
+         metric                comparison         method    diff   ci_lo   ci_hi  rel_diff_pct  p_boot  significant
+0   d7_retained      paid_video - organic          naive -0.0186 -0.0294 -0.0075       -7.0367  0.0005         True
+1   d7_retained      paid_video - organic  tier-adjusted -0.0134 -0.0258 -0.0013       -5.1788  0.0310         True
+2   d7_retained     paid_social - organic          naive -0.0080 -0.0195  0.0028       -3.0173  0.1400        False
+3   d7_retained     paid_social - organic  tier-adjusted -0.0046 -0.0166  0.0080       -1.7925  0.4460        False
+4   d7_retained  paid_video - paid_social          naive -0.0106 -0.0218  0.0000       -4.1444  0.0520        False
+5   d7_retained  paid_video - paid_social  tier-adjusted -0.0088 -0.0213  0.0040       -3.4481  0.1800        False
+6         rev30      paid_video - organic          naive -0.9308 -1.1879 -0.6607      -37.5736  0.0005         True
+7         rev30      paid_video - organic  tier-adjusted -0.1647 -0.4901  0.1597       -7.5879  0.2760        False
+8         rev30     paid_social - organic          naive -0.2311 -0.4968  0.0459       -9.3290  0.0870        False
+9         rev30     paid_social - organic  tier-adjusted -0.1766 -0.4297  0.0814       -8.1354  0.1770        False
+10        rev30  paid_video - paid_social          naive -0.6997 -0.9601 -0.4403      -31.1507  0.0005         True
+11        rev30  paid_video - paid_social  tier-adjusted  0.0119 -0.2930  0.3141        0.5960  0.9150        False
+12      payer30      paid_video - organic          naive -0.0434 -0.0508 -0.0353      -32.4662  0.0005         True
+13      payer30      paid_video - organic  tier-adjusted -0.0069 -0.0162  0.0020       -5.7425  0.1530        False
+14      payer30     paid_social - organic          naive -0.0005 -0.0093  0.0084       -0.3753  0.9190        False
+15      payer30     paid_social - organic  tier-adjusted -0.0006 -0.0093  0.0081       -0.4691  0.8670        False
+16      payer30  paid_video - paid_social          naive -0.0429 -0.0511 -0.0348      -32.2117  0.0005         True
+17      payer30  paid_video - paid_social  tier-adjusted -0.0064 -0.0161  0.0033       -5.2982  0.1950        False
+
+Logit D7 (adjusted)
+                            Coef.  Std.Err.        z   P>|z|  [0.025  0.975]
+Intercept                 -1.0356    0.0360 -28.8034  0.0000 -1.1060 -0.9651
+C(channel)[T.paid_social] -0.0411    0.0297  -1.3870  0.1654 -0.0993  0.0170
+C(channel)[T.paid_video]  -0.0690    0.0332  -2.0786  0.0377 -0.1340 -0.0039
+C(country_tier)[T.2]       0.0444    0.0357   1.2463  0.2126 -0.0254  0.1143
+
+OLS rev30 (robust SE)
+                            Coef.  Std.Err.        z   P>|z|  [0.025  0.975]
+Intercept                  2.9961    0.1847  16.2205  0.0000  2.6341  3.3581
+C(channel)[T.paid_social] -0.2349    0.1433  -1.6386  0.1013 -0.5158  0.0461
+C(channel)[T.paid_video]  -0.1965    0.1553  -1.2649  0.2059 -0.5009  0.1080
+C(country_tier)[T.2]      -1.1967    0.1935  -6.1833  0.0000 -1.5761 -0.8174
+
+rev30 sd 10.52; MDE paid_social vs organic = $0.383 per install (18% of mean)
+MDE D7 = 1.59 pp
+
+linked players share by channel
+channel
+organic        0.0477
+paid_social    0.0475
+paid_video     0.0388
+Name: n_devices, dtype: float64

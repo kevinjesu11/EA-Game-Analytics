@@ -1,0 +1,120 @@
+C:\Users\Kevin jesu\Downloads\EA_Kevin_COMPLETE\EA_Analytics_Intern_Submission_Kevin\task4_churn.py:56: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  print('\nChurn rate by player age (all snapshots)'); print(df.groupby(pd.cut(df.age_days,[-1,6,13,29,59,119,400])).churn14.agg(['size','mean']).round(3))
+   days_inactive  spells_reaching_k  pct_return_within_30d
+0              1             302907                   94.5
+1              2             248990                   93.8
+2              3             209640                   93.0
+3              5             155729                   91.5
+4              7             120228                   90.1
+5             10              85562                   87.8
+6             14              58045                   84.6
+7             21              32668                   77.6
+8             28              19946                   68.1
+
+train 149642 rows (2026-01-29..2026-03-19), churn 0.196
+test  102863 rows (2026-04-02..2026-04-16), churn 0.182
+
+Coefficients (standardised)
+                        feature  coef_per_sd  odds_ratio
+                   log_age_days        1.348       3.849
+                          level       -0.550       0.577
+                log_playtime_28       -0.308       0.735
+            log_ads_completed_7       -0.144       0.866
+                   trend_active        0.076       1.079
+                  active_days_7       -0.067       0.935
+                 country_tier_3        0.055       1.057
+acquisition_channel_paid_social        0.053       1.054
+                 country_tier_4        0.048       1.049
+ acquisition_channel_paid_video        0.034       1.035
+                 country_tier_2        0.033       1.034
+                     payer_ever       -0.028       0.973
+                   platform_iOS       -0.020       0.980
+                days_since_last       -0.005       0.995
+
+TEST  AUC 0.747 | PR-AUC 0.381 (base rate 0.182) | Brier 0.1315
+Baseline rule (active_days_7 only): AUC 0.602  PR-AUC 0.221
+15-feature model for comparison: AUC 0.754
+
+Churn rate by player age (all snapshots)
+             size   mean
+age_days                
+(-1, 6]     36710  0.041
+(6, 13]     33203  0.085
+(13, 29]    54480  0.128
+(29, 59]    57656  0.190
+(59, 119]   45256  0.260
+(119, 400]  52929  0.364
+train AUC 0.752
+
+Threshold table (test)
+ threshold  pct_targeted  precision  recall  offers_per_1000  wasted_per_1000
+      0.10        65.921      0.248   0.898          659.207          495.922
+      0.15        49.548      0.288   0.786          495.484          352.615
+      0.20        37.678      0.325   0.673          376.783          254.367
+      0.25        28.517      0.361   0.565          285.166          182.340
+      0.30        21.364      0.396   0.465          213.643          129.055
+      0.40        10.894      0.458   0.274          108.941           59.020
+      0.50         4.690      0.509   0.131           46.897           23.031
+      0.60         1.538      0.537   0.045           15.380            7.116
+
+Deciles (top first)
+            n  mean_pred  actual   lift
+decile                                 
+9       10287      0.513   0.466  2.561
+8       10286      0.357   0.340  1.869
+7       10286      0.274   0.258  1.419
+6       10286      0.214   0.203  1.117
+5       10286      0.168   0.169  0.930
+4       10287      0.132   0.131  0.722
+3       10286      0.103   0.106  0.585
+2       10286      0.078   0.074  0.408
+1       10286      0.055   0.049  0.269
+0       10287      0.029   0.022  0.121
+
+Segment performance
+                        n  churn_rate    auc  mean_pred
+new_player=0      75805.0       0.225  0.707      0.239
+new_player=1      27058.0       0.061  0.700      0.062
+payer_ever=0      88163.0       0.182  0.754      0.191
+payer_ever=1      14700.0       0.184  0.704      0.200
+country_tier=1    25053.0       0.216  0.731      0.230
+country_tier=2    19004.0       0.217  0.726      0.236
+country_tier=3    19499.0       0.197  0.744      0.208
+country_tier=4    39307.0       0.136  0.750      0.140
+platform=Android  72385.0       0.174  0.750      0.184
+platform=iOS      30478.0       0.200  0.738      0.211
+active_days_7=1   57147.0       0.230  0.725      0.247
+active_days_7=2   28549.0       0.149  0.724      0.148
+active_days_7=3   11981.0       0.087  0.704      0.094
+active_days_7=4    3964.0       0.057  0.643      0.066
+active_days_7=5    1002.0       0.032  0.732      0.051
+active_days_7=6     204.0       0.020  0.742      0.043
+active_days_7=7      16.0       0.000    NaN      0.028
+
+AUC by test snapshot
+s
+2026-04-02    0.747
+2026-04-09    0.748
+2026-04-16    0.747
+dtype: float64
+
+Economics
+ value_retained_player  offer_cost  uplift  threshold  pct_targeted  precision  exp_net_value_per_1000_active
+                     2         0.1     0.1       0.50         4.690      0.509                          0.772
+                     2         0.1     0.2       0.25        28.517      0.361                         15.764
+                     2         0.5     0.1       2.50         0.000        NaN                          0.000
+                     2         0.5     0.2       1.25         0.000        NaN                          0.000
+                     2         1.0     0.1       5.00         0.000        NaN                          0.000
+                     2         1.0     0.2       2.50         0.000        NaN                          0.000
+                     5         0.1     0.1       0.20        37.678      0.325                         27.948
+                     5         0.1     0.2       0.10        65.921      0.248                        106.174
+                     5         0.5     0.1       1.00         0.000        NaN                          0.000
+                     5         0.5     0.2       0.50         4.690      0.509                          3.858
+                     5         1.0     0.1       2.00         0.000        NaN                          0.000
+                     5         1.0     0.2       1.00         0.000        NaN                          0.000
+                    10         0.1     0.1       0.10        65.921      0.248                        106.174
+                    10         0.1     0.2       0.05        87.403      0.204                        288.753
+                    10         0.5     0.1       0.50         4.690      0.509                          3.858
+                    10         0.5     0.2       0.25        28.517      0.361                         78.820
+                    10         1.0     0.1       1.00         0.000        NaN                          0.000
+                    10         1.0     0.2       0.50         4.690      0.509                          7.717

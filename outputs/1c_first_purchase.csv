@@ -1,0 +1,10 @@
+bucket,players,pct_of_installs
+0 before install (DQ),66,0.18
+1 day 0,395,1.09
+2 day 1,298,0.82
+3 day 2-3,444,1.23
+4 day 4-7,776,2.15
+5 day 8-14,939,2.6
+6 day 15-30,1501,4.15
+7 day 31+,2193,6.06
+9 never paid (to 30 Apr),29565,81.72
